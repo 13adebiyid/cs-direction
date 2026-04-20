@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Find the right Computer Science specialisation for you. Answer 7 short questions and get a personalised recommendation backed by industry data.">
+  <title>CS Direction | Find Your Specialisation</title>
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Google Fonts: Sora (headings) + Nunito (body) -->
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ── Base ─────────────────────────────────────── */
+    :root {
+      --navy:   #0d1f3c;
+      --teal:   #0ea5a0;
+      --teal-d: #0c8e89;
+      --cream:  #f7f5f0;
+      --card-bg:#ffffff;
+      --border: #e2e0da;
+      --text:   #1a1a2e;
+      --muted:  #6b7280;
+      --radius: 14px;
+      --shadow: 0 2px 16px rgba(13,31,60,.08);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: var(--cream);
+      color: var(--text);
+      font-size: 1.05rem;
+      line-height: 1.7;
+      min-height: 100vh;
+    }
+
+    h1, h2, h3, h4 { font-family: 'Sora', sans-serif; }
+
+    a { color: var(--teal); }
+    a:focus-visible, button:focus-visible, input:focus-visible {
+      outline: 3px solid var(--teal);
+      outline-offset: 3px;
+    }
+
+    /* ── Layout ───────────────────────────────────── */
+    .site-header {
+      background: var(--navy);
+      padding: 1rem 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+    }
+    .site-header .logo {
+      font-family: 'Sora', sans-serif;
+      font-weight: 800;
+      font-size: 1.25rem;
+      color: #fff;
+      text-decoration: none;
+      letter-spacing: -.02em;
+    }
+    .site-header .logo span { color: var(--teal); }
+
+    .page { display: none; }
+    .page.active { display: block; }
+
+    .section-wrap {
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 3rem 1.25rem 4rem;
+    }
+
+    /* ── Buttons ──────────────────────────────────── */
+    .btn-primary-custom {
+      background: var(--teal);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: .75rem 2rem;
+      font-family: 'Sora', sans-serif;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background .18s, transform .12s;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .btn-primary-custom:hover { background: var(--teal-d); color: #fff; }
+    .btn-primary-custom:active { transform: scale(.97); }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--teal);
+      border: 2px solid var(--teal);
+      border-radius: 10px;
+      padding: .65rem 1.5rem;
+      font-family: 'Sora', sans-serif;
+      font-weight: 600;
+      font-size: .95rem;
+      cursor: pointer;
+      transition: background .18s, color .18s;
+    }
+    .btn-ghost:hover { background: var(--teal); color: #fff; }
+
+    /* ── Landing ──────────────────────────────────── */
+    .hero {
+      text-align: center;
+      padding: 4rem 1rem 3rem;
+    }
+    .hero-badge {
+      display: inline-block;
+      background: #e6f8f7;
+      color: var(--teal-d);
+      font-weight: 700;
+      font-size: .8rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      padding: .35rem 1rem;
+      border-radius: 100px;
+      margin-bottom: 1.5rem;
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 800;
+      color: var(--navy);
+      line-height: 1.15;
+      margin-bottom: 1.25rem;
+    }
+    .hero h1 em { font-style: normal; color: var(--teal); }
+    .hero p {
+      font-size: 1.15rem;
+      color: var(--muted);
+      max-width: 540px;
+      margin: 0 auto 2.5rem;
+    }
+
+    .spec-pills {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: .6rem;
+      margin-bottom: 3rem;
+    }
+    .spec-pill {
+      background: var(--card-bg);
+      border: 1.5px solid var(--border);
+      border-radius: 100px;
+      padding: .4rem 1rem;
+      font-size: .88rem;
+      font-weight: 600;
+      color: var(--navy);
+    }
+
+    .stats-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+    .stat-card {
+      background: var(--card-bg);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem 1.75rem;
+      text-align: center;
+      min-width: 140px;
+      box-shadow: var(--shadow);
+    }
+    .stat-card .num {
+      font-family: 'Sora', sans-serif;
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--teal);
+      line-height: 1;
+    }
+    .stat-card .label {
+      font-size: .82rem;
+      color: var(--muted);
+      margin-top: .3rem;
+    }
+
+    /* ── Quiz ─────────────────────────────────────── */
+    .progress-bar-wrap {
+      background: var(--border);
+      border-radius: 100px;
+      height: 6px;
+      margin-bottom: .75rem;
+      overflow: hidden;
+    }
+    .progress-bar-fill {
+      background: var(--teal);
+      height: 100%;
+      border-radius: 100px;
+      transition: width .4s ease;
+    }
+    .progress-label {
+      font-size: .85rem;
+      color: var(--muted);
+      text-align: right;
+      margin-bottom: 2rem;
+    }
+
+    .question-text {
+      font-family: 'Sora', sans-serif;
+      font-size: clamp(1.2rem, 3vw, 1.6rem);
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 1.75rem;
+      line-height: 1.35;
+    }
+
+    .option-btn {
+      display: block;
+      width: 100%;
+      background: var(--card-bg);
+      border: 2px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1rem 1.25rem;
+      text-align: left;
+      font-family: 'Nunito', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text);
+      cursor: pointer;
+      transition: border-color .15s, background .15s, transform .1s;
+      margin-bottom: .75rem;
+      box-shadow: var(--shadow);
+    }
+    .option-btn:hover {
+      border-color: var(--teal);
+      background: #f0fafa;
+    }
+    .option-btn.selected {
+      border-color: var(--teal);
+      background: #e6f8f7;
+      color: var(--navy);
+    }
+    .option-btn:active { transform: scale(.99); }
+
+    .quiz-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 1.75rem;
+      gap: 1rem;
+    }
+
+    /* ── Results ──────────────────────────────────── */
+    .result-header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+    .result-badge {
+      display: inline-block;
+      background: #e6f8f7;
+      color: var(--teal-d);
+      font-weight: 700;
+      font-size: .82rem;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      padding: .35rem 1.1rem;
+      border-radius: 100px;
+      margin-bottom: 1rem;
+    }
+    .result-title {
+      font-family: 'Sora', sans-serif;
+      font-size: clamp(1.7rem, 4vw, 2.5rem);
+      font-weight: 800;
+      color: var(--navy);
+      line-height: 1.2;
+      margin-bottom: 1rem;
+    }
+
+    .spec-card {
+      background: var(--card-bg);
+      border: 1.5px solid var(--border);
+      border-radius: 18px;
+      padding: 2rem;
+      box-shadow: var(--shadow);
+      margin-bottom: 1.5rem;
+    }
+    .spec-card.primary {
+      border-color: var(--teal);
+      box-shadow: 0 4px 24px rgba(14,165,160,.15);
+    }
+    .spec-card .spec-name {
+      font-family: 'Sora', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--navy);
+      margin-bottom: .5rem;
+    }
+    .spec-card .spec-tag {
+      display: inline-block;
+      background: var(--teal);
+      color: #fff;
+      font-size: .78rem;
+      font-weight: 700;
+      padding: .25rem .8rem;
+      border-radius: 100px;
+      margin-bottom: 1rem;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+    }
+    .spec-card p { color: #444; margin-bottom: .75rem; }
+
+    .next-steps {
+      background: var(--navy);
+      border-radius: var(--radius);
+      padding: 1.75rem;
+      margin: 1.5rem 0;
+    }
+    .next-steps h3 {
+      color: #fff;
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+    }
+    .next-steps li {
+      color: #c8d8f0;
+      font-size: .95rem;
+      margin-bottom: .5rem;
+    }
+
+    .score-bar-row { margin-bottom: .75rem; }
+    .score-bar-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: .85rem;
+      color: var(--muted);
+      margin-bottom: .25rem;
+    }
+    .score-bar-bg {
+      background: var(--border);
+      border-radius: 100px;
+      height: 8px;
+      overflow: hidden;
+    }
+    .score-bar-fill {
+      background: var(--teal);
+      height: 100%;
+      border-radius: 100px;
+      transition: width .8s ease;
+    }
+
+    /* ── Resources ────────────────────────────────── */
+    .resource-card {
+      background: var(--card-bg);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      margin-bottom: 1.25rem;
+      box-shadow: var(--shadow);
+    }
+    .resource-card h3 {
+      font-size: 1.15rem;
+      color: var(--navy);
+      margin-bottom: .75rem;
+    }
+    .resource-link {
+      display: inline-block;
+      color: var(--teal);
+      font-weight: 600;
+      font-size: .93rem;
+      text-decoration: none;
+      border-bottom: 2px solid transparent;
+      transition: border-color .15s;
+    }
+    .resource-link:hover { border-color: var(--teal); }
+    .resource-tag {
+      display: inline-block;
+      font-size: .75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      padding: .2rem .65rem;
+      border-radius: 100px;
+      margin-right: .4rem;
+      margin-bottom: .4rem;
+    }
+    .tag-web   { background: #ffe4b5; color: #7a4800; }
+    .tag-ai    { background: #dbeafe; color: #1e40af; }
+    .tag-cyber { background: #fce7f3; color: #9d174d; }
+    .tag-data  { background: #d1fae5; color: #065f46; }
+    .tag-se    { background: #ede9fe; color: #4c1d95; }
+
+    /* ── Footer ───────────────────────────────────── */
+    .site-footer {
+      background: var(--navy);
+      color: #8fa8c8;
+      text-align: center;
+      font-size: .85rem;
+      padding: 1.5rem 1rem;
+    }
+    .site-footer a { color: var(--teal); }
+
+    /* ── Fade transition ──────────────────────────── */
+    .page.active { animation: fadeIn .25s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+    /* ── Disclaimer ───────────────────────────────── */
+    .disclaimer {
+      background: #fffbea;
+      border: 1.5px solid #fcd34d;
+      border-radius: 10px;
+      padding: 1rem 1.25rem;
+      font-size: .88rem;
+      color: #78350f;
+      margin-top: 2rem;
+    }
+
+    @media (max-width: 576px) {
+      .quiz-nav { flex-direction: column-reverse; }
+      .quiz-nav button { width: 100%; }
+      .stats-row { gap: .75rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Header ────────────────────────────────────── -->
+<header class="site-header" role="banner">
+  <a href="#" class="logo" onclick="showPage('landing')" aria-label="CS Direction home">
+    CS<span>Direction</span>
+  </a>
+  <nav aria-label="Main navigation" style="margin-left:auto;display:flex;gap:.75rem;">
+    <button class="btn-ghost" onclick="showPage('resources')" aria-label="Browse resources">Resources</button>
+  </nav>
+</header>
+
+<!-- ── LANDING PAGE ───────────────────────────────── -->
+<main id="page-landing" class="page active" role="main">
+  <div class="section-wrap">
+    <div class="hero">
+      <div class="hero-badge">Free &bull; No sign-up &bull; 2 minutes</div>
+      <h1>Find your <em>CS specialisation</em><br>before you commit</h1>
+      <p>Computer science is broad. This quiz maps your interests and working style to one of five specialisation pathways, backed by UK industry and academic research.</p>
+      <button class="btn-primary-custom" onclick="startQuiz()" style="font-size:1.1rem;padding:.9rem 2.5rem;">
+        Start the quiz &rarr;
+      </button>
+    </div>
+
+    <div class="spec-pills" aria-label="Available specialisations">
+      <span class="spec-pill">Web Development</span>
+      <span class="spec-pill">AI &amp; Machine Learning</span>
+      <span class="spec-pill">Cybersecurity</span>
+      <span class="spec-pill">Data Science</span>
+      <span class="spec-pill">Software Engineering</span>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="num">10%</div>
+        <div class="label">CS graduate unemployment rate in the UK (HESA, 2025)</div>
+      </div>
+      <div class="stat-card">
+        <div class="num">52%</div>
+        <div class="label">Salary premium for UK tech workers (CompTIA, 2024)</div>
+      </div>
+      <div class="stat-card">
+        <div class="num">87k</div>
+        <div class="label">New programming roles projected by 2030 (Skills England, 2025)</div>
+      </div>
+    </div>
+
+    <div class="spec-card">
+      <p style="color:var(--muted);font-size:.9rem;text-align:center;margin:0;">
+        <strong style="color:var(--navy);">No data collected.</strong>
+        This quiz runs entirely in your browser. Nothing is sent to any server. No cookies. No accounts.
+      </p>
+    </div>
+  </div>
+</main>
+
+<!-- ── QUIZ PAGE ──────────────────────────────────── -->
+<div id="page-quiz" class="page" role="main" aria-live="polite" aria-atomic="true">
+  <div class="section-wrap">
+    <div class="progress-bar-wrap" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" id="quiz-progressbar">
+      <div class="progress-bar-fill" id="progress-fill" style="width:0%"></div>
+    </div>
+    <div class="progress-label" id="progress-label">Question 1 of 7</div>
+
+    <p class="question-text" id="question-text"></p>
+
+    <div id="options-container"></div>
+
+    <div class="quiz-nav">
+      <button class="btn-ghost" id="btn-back" onclick="quizBack()" style="visibility:hidden;">
+        &larr; Back
+      </button>
+      <button class="btn-primary-custom" id="btn-next" onclick="quizNext()" disabled>
+        Next &rarr;
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ── RESULTS PAGE ───────────────────────────────── -->
+<div id="page-results" class="page" role="main">
+  <div class="section-wrap">
+    <div class="result-header">
+      <div class="result-badge">Your result</div>
+      <h2 class="result-title" id="result-heading">Loading&hellip;</h2>
+      <p id="result-subheading" style="color:var(--muted);max-width:540px;margin:0 auto;"></p>
+    </div>
+
+    <div id="primary-spec-card"></div>
+    <div id="secondary-spec-card"></div>
+
+    <div id="next-steps-box"></div>
+
+    <h3 style="font-size:1.05rem;color:var(--navy);margin:2rem 0 1rem;">How the scores compared</h3>
+    <div id="score-bars"></div>
+
+    <div class="disclaimer">
+      <strong>Keep in mind:</strong> this is a starting point, not a definitive answer. University departments, module choices, and work experience all shape which path makes sense for you. Use this to start a conversation, not end one.
+    </div>
+
+    <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-top:2rem;">
+      <button class="btn-primary-custom" onclick="showPage('resources')">Browse resources &rarr;</button>
+      <button class="btn-ghost" onclick="startQuiz()">Retake quiz</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── RESOURCES PAGE ─────────────────────────────── -->
+<div id="page-resources" class="page" role="main">
+  <div class="section-wrap">
+    <div style="margin-bottom:2.5rem;">
+      <h2 style="font-family:'Sora',sans-serif;font-size:2rem;font-weight:800;color:var(--navy);">Resources by specialisation</h2>
+      <p style="color:var(--muted);">A curated starting point for each pathway. These are free, reputable, and regularly updated.</p>
+    </div>
+
+    <!-- Web Dev -->
+    <div class="resource-card">
+      <h3><span class="resource-tag tag-web">Web Development</span></h3>
+      <p style="color:#555;font-size:.92rem;margin-bottom:1rem;">Covers front-end and full-stack development, UX, and web technologies.</p>
+      <div style="display:flex;flex-wrap:wrap;gap:.5rem;">
+        <a href="https://developer.mozilla.org" class="resource-link" target="_blank" rel="noopener">MDN Web Docs &rarr;</a>
+        <a href="https://www.freecodecamp.org" class="resource-link" target="_blank" rel="noopener">freeCodeCamp &rarr;</a>
+        <a href="https://roadmap.sh/frontend" class="resource-link" target="_blank" rel="noopener">Frontend Roadmap &rarr;</a>
+      </div>
+    </div>
+
+    <!-- AI/ML -->
+    <div class="resource-card">
+      <h3><span class="resource-tag tag-ai">AI &amp; Machine Learning</span></h3>
+      <p style="color:#555;font-size:.92rem;margin-bottom:1rem;">Covers machine learning, deep learning, NLP, and AI research methods.</p>
+      <div style="display:flex;flex-wrap:wrap;gap:.5rem;">
+        <a href="https://www.deeplearning.ai" class="resource-link" target="_blank" rel="noopener">DeepLearning.AI &rarr;</a>
+        <a href="https://www.kaggle.com/learn" class="resource-link" target="_blank" rel="noopener">Kaggle Learn &rarr;</a>
+        <a href="https://fast.ai" class="resource-link" target="_blank" rel="noopener">fast.ai &rarr;</a>
+      </div>
+    </div>
+
+    <!-- Cybersecurity -->
+    <div class="resource-card">
+      <h3><span class="resource-tag tag-cyber">Cybersecurity</span></h3>
+      <p style="color:#555;font-size:.92rem;margin-bottom:1rem;">Covers ethical hacking, network security, cryptography, and incident response.</p>
+      <div style="display:flex;flex-wrap:wrap;gap:.5rem;">
+        <a href="https://tryhackme.com" class="resource-link" target="_blank" rel="noopener">TryHackMe &rarr;</a>
+        <a href="https://www.cybrary.it" class="resource-link" target="_blank" rel="noopener">Cybrary &rarr;</a>
+        <a href="https://www.ncsc.gov.uk/section/education-skills" class="resource-link" target="_blank" rel="noopener">NCSC Education &rarr;</a>
+      </div>
+    </div>
+
+    <!-- Data Science -->
+    <div class="resource-card">
+      <h3><span class="resource-tag tag-data">Data Science</span></h3>
+      <p style="color:#555;font-size:.92rem;margin-bottom:1rem;">Covers data analysis, statistics, visualisation, and business intelligence.</p>
+      <div style="display:flex;flex-wrap:wrap;gap:.5rem;">
+        <a href="https://www.kaggle.com" class="resource-link" target="_blank" rel="noopener">Kaggle &rarr;</a>
+        <a href="https://www.coursera.org/specializations/jhu-data-science" class="resource-link" target="_blank" rel="noopener">Johns Hopkins Data Science &rarr;</a>
+        <a href="https://datasciencedojo.com" class="resource-link" target="_blank" rel="noopener">Data Science Dojo &rarr;</a>
+      </div>
+    </div>
+
+    <!-- Software Engineering -->
+    <div class="resource-card">
+      <h3><span class="resource-tag tag-se">Software Engineering</span></h3>
+      <p style="color:#555;font-size:.92rem;margin-bottom:1rem;">Covers system design, software architecture, testing, and development processes.</p>
+      <div style="display:flex;flex-wrap:wrap;gap:.5rem;">
+        <a href="https://roadmap.sh/backend" class="resource-link" target="_blank" rel="noopener">Backend Roadmap &rarr;</a>
+        <a href="https://www.bcs.org/membership/become-a-member/bcs-code-of-conduct/" class="resource-link" target="_blank" rel="noopener">BCS Code of Conduct &rarr;</a>
+        <a href="https://www.theodinproject.com" class="resource-link" target="_blank" rel="noopener">The Odin Project &rarr;</a>
+      </div>
+    </div>
+
+    <div class="spec-card" style="margin-top:2rem;">
+      <p style="color:var(--muted);font-size:.9rem;margin:0;">
+        Not sure which specialisation fits? <button onclick="startQuiz()" style="background:none;border:none;color:var(--teal);font-weight:700;font-size:.9rem;cursor:pointer;padding:0;">Take the quiz &rarr;</button>
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ── Footer ─────────────────────────────────────── -->
+<footer class="site-footer" role="contentinfo">
+  <p style="margin:0;">
+    CS Direction &bull; Final Year Project &bull; David Adebiyi, N1327174 &bull; Nottingham Trent University &bull;
+    <a href="https://www.w3.org/TR/WCAG21/" target="_blank" rel="noopener">WCAG 2.1 AA</a>
+  </p>
+  <p style="margin:.3rem 0 0; font-size:.8rem;">
+    Data sources: HESA (2025), CompTIA (2024), Skills England (2025), Stack Overflow Developer Survey (2024).
+    Recommendations are guidance only &mdash; not career advice.
+  </p>
+</footer>
+
+<script>
+// ── Quiz data ──────────────────────────────────────
+// weights: { web, ai, cyber, data, se }
+
+const QUESTIONS = [
+  {
+    text: "What kind of problems do you enjoy most?",
+    options: [
+      { text: "Designing things that people interact with visually",       w: { web:2, ai:0, cyber:0, data:0, se:1 } },
+      { text: "Analysing patterns hidden inside large datasets",           w: { web:0, ai:1, cyber:0, data:2, se:0 } },
+      { text: "Finding out how systems can be attacked or protected",      w: { web:0, ai:0, cyber:2, data:0, se:1 } },
+      { text: "Building reliable systems that run invisibly behind apps",  w: { web:1, ai:0, cyber:0, data:0, se:2 } }
+    ]
+  },
+  {
+    text: "How comfortable are you with mathematics and statistics?",
+    options: [
+      { text: "Very comfortable — I enjoy abstract and formal maths",      w: { web:0, ai:2, cyber:0, data:2, se:0 } },
+      { text: "Comfortable with applied maths and formulas",               w: { web:0, ai:1, cyber:1, data:1, se:1 } },
+      { text: "I prefer logical thinking over formal equations",           w: { web:1, ai:0, cyber:1, data:0, se:1 } },
+      { text: "Maths is not my strength but I love solving problems",      w: { web:2, ai:0, cyber:1, data:0, se:1 } }
+    ]
+  },
+  {
+    text: "What matters more to you in day-to-day work?",
+    options: [
+      { text: "Seeing something visual come to life on screen",            w: { web:2, ai:0, cyber:0, data:0, se:1 } },
+      { text: "Hunting for security weaknesses before attackers do",       w: { web:0, ai:0, cyber:2, data:0, se:0 } },
+      { text: "Turning messy data into clear, useful insights",            w: { web:0, ai:1, cyber:0, data:2, se:0 } },
+      { text: "Writing well-structured code that scales to millions",      w: { web:0, ai:0, cyber:0, data:0, se:2 } }
+    ]
+  },
+  {
+    text: "How do you feel about working with data?",
+    options: [
+      { text: "I love it — the bigger and messier the dataset, the better",w: { web:0, ai:2, cyber:0, data:2, se:0 } },
+      { text: "I use it when needed but I prefer building systems",        w: { web:1, ai:0, cyber:0, data:0, se:2 } },
+      { text: "Data security and privacy interests me more than analysis", w: { web:0, ai:0, cyber:2, data:1, se:0 } },
+      { text: "I prefer working at the user interface layer above data",   w: { web:2, ai:0, cyber:0, data:0, se:1 } }
+    ]
+  },
+  {
+    text: "Which of these job titles sounds most appealing?",
+    options: [
+      { text: "Front-end developer building apps millions of people use",  w: { web:2, ai:0, cyber:0, data:0, se:1 } },
+      { text: "Data scientist finding insights that drive business decisions", w: { web:0, ai:1, cyber:0, data:2, se:0 } },
+      { text: "Penetration tester finding weaknesses in real systems",     w: { web:0, ai:0, cyber:2, data:0, se:0 } },
+      { text: "Machine learning engineer building AI-powered products",    w: { web:0, ai:2, cyber:0, data:1, se:1 } }
+    ]
+  },
+  {
+    text: "Which environment would you prefer to work in?",
+    options: [
+      { text: "Fast-moving startup where I see the product go live",       w: { web:2, ai:0, cyber:0, data:0, se:1 } },
+      { text: "Research or analytical team working on long-term problems", w: { web:0, ai:1, cyber:0, data:2, se:0 } },
+      { text: "Security-focused team where the stakes are genuinely high", w: { web:0, ai:0, cyber:2, data:0, se:0 } },
+      { text: "Large tech company working on complex infrastructure",      w: { web:0, ai:1, cyber:1, data:0, se:2 } }
+    ]
+  },
+  {
+    text: "What kind of impact do you most want your work to have?",
+    options: [
+      { text: "Make digital products more beautiful and easy to use",      w: { web:2, ai:0, cyber:0, data:0, se:1 } },
+      { text: "Keep organisations and individuals safe online",            w: { web:0, ai:0, cyber:2, data:0, se:0 } },
+      { text: "Help organisations make smarter, evidence-based decisions", w: { web:0, ai:1, cyber:0, data:2, se:0 } },
+      { text: "Build the software infrastructure that society depends on", w: { web:0, ai:0, cyber:0, data:0, se:2 } }
+    ]
+  }
+];
+
+const SPECS = {
+  web:   { name: "Web Development",          colour: "#b45309" },
+  ai:    { name: "AI & Machine Learning",    colour: "#1d4ed8" },
+  cyber: { name: "Cybersecurity",            colour: "#9d174d" },
+  data:  { name: "Data Science",             colour: "#065f46" },
+  se:    { name: "Software Engineering",     colour: "#4c1d95" }
+};
+
+const SPEC_INFO = {
+  web: {
+    summary: "You lean toward creating digital experiences people interact with every day. Web development spans front-end engineering, UX implementation, and full-stack application building.",
+    day: "A typical day might involve building a React component, reviewing a Figma design handover, debugging a CSS layout issue, or integrating a REST API.",
+    careers: ["Front-end developer", "Full-stack developer", "UX engineer", "UI developer"],
+    steps: ["Learn HTML, CSS, and JavaScript fundamentals on MDN Web Docs.", "Build three small projects and push them to GitHub to start your portfolio.", "Explore the Frontend Roadmap at roadmap.sh to see what to learn next."]
+  },
+  ai: {
+    summary: "You are drawn to building systems that learn from data and make predictions. AI and ML combines mathematics, software engineering, and domain expertise.",
+    day: "A typical day might involve cleaning a dataset, training a classification model in Python, evaluating model performance, or reading a recent arxiv paper.",
+    careers: ["Machine learning engineer", "AI researcher", "NLP engineer", "Computer vision specialist"],
+    steps: ["Start with Python and the pandas and scikit-learn libraries via Kaggle Learn.", "Complete Andrew Ng's Machine Learning Specialisation on Coursera.", "Enter a Kaggle competition to apply skills on real problems with real feedback."]
+  },
+  cyber: {
+    summary: "You are motivated by understanding how systems fail and making them more resilient. Cybersecurity spans offensive security, defensive operations, governance, and cryptography.",
+    day: "A typical day might involve running a penetration test, reviewing security logs, writing a risk assessment, or studying a recently disclosed vulnerability.",
+    careers: ["Penetration tester", "Security analyst", "Incident responder", "Security architect"],
+    steps: ["Create a free account on TryHackMe and complete the Introduction to Cybersecurity path.", "Study for the CompTIA Security+ certification as an industry-recognised baseline.", "Follow the NCSC's Cyber First programme for students at ncsc.gov.uk."]
+  },
+  data: {
+    summary: "You are driven by turning messy, complex data into clear decisions. Data science combines statistical analysis, programming, and domain knowledge to find patterns that matter.",
+    day: "A typical day might involve writing SQL queries, building a visualisation in Tableau, running a statistical test in Python, or presenting findings to a non-technical team.",
+    careers: ["Data scientist", "Data analyst", "Business intelligence analyst", "Research scientist"],
+    steps: ["Learn Python with pandas and matplotlib through Kaggle's free courses.", "Work through the Johns Hopkins Data Science Specialisation on Coursera.", "Build a portfolio of two to three analysis projects using public datasets from data.gov.uk."]
+  },
+  se: {
+    summary: "You are interested in building software that is correct, scalable, and maintainable. Software engineering focuses on design patterns, architecture, testing, and the craft of code.",
+    day: "A typical day might involve reviewing a pull request, designing a microservice API, writing unit tests, or discussing architecture with the team.",
+    careers: ["Software engineer", "Back-end developer", "DevOps engineer", "Solutions architect"],
+    steps: ["Master data structures and algorithms through Leetcode or the Odin Project.", "Learn Git, version control workflows, and the basics of system design.", "Read Clean Code by Robert C. Martin and apply its principles to a personal project."]
+  }
+};
+
+// ── State ──────────────────────────────────────────
+let currentQ = 0;
+let answers = new Array(QUESTIONS.length).fill(null);
+
+// ── Navigation ─────────────────────────────────────
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+// ── Quiz ───────────────────────────────────────────
+function startQuiz() {
+  currentQ = 0;
+  answers = new Array(QUESTIONS.length).fill(null);
+  renderQuestion();
+  showPage('quiz');
+}
+
+function renderQuestion() {
+  const q = QUESTIONS[currentQ];
+  const total = QUESTIONS.length;
+  const pct = Math.round((currentQ / total) * 100);
+
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('quiz-progressbar').setAttribute('aria-valuenow', pct);
+  document.getElementById('progress-label').textContent = 'Question ' + (currentQ + 1) + ' of ' + total;
+  document.getElementById('question-text').textContent = q.text;
+
+  const container = document.getElementById('options-container');
+  container.innerHTML = '';
+
+  q.options.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn' + (answers[currentQ] === i ? ' selected' : '');
+    btn.textContent = opt.text;
+    btn.setAttribute('aria-pressed', answers[currentQ] === i ? 'true' : 'false');
+    btn.onclick = () => selectOption(i);
+    container.appendChild(btn);
+  });
+
+  document.getElementById('btn-back').style.visibility = currentQ === 0 ? 'hidden' : 'visible';
+  const nextBtn = document.getElementById('btn-next');
+  nextBtn.textContent = currentQ === total - 1 ? 'See my result →' : 'Next →';
+  nextBtn.disabled = answers[currentQ] === null;
+}
+
+function selectOption(i) {
+  answers[currentQ] = i;
+  document.querySelectorAll('.option-btn').forEach((btn, idx) => {
+    btn.classList.toggle('selected', idx === i);
+    btn.setAttribute('aria-pressed', idx === i ? 'true' : 'false');
+  });
+  document.getElementById('btn-next').disabled = false;
+}
+
+function quizNext() {
+  if (answers[currentQ] === null) return;
+  if (currentQ < QUESTIONS.length - 1) {
+    currentQ++;
+    renderQuestion();
+    window.scrollTo(0, 0);
+  } else {
+    showResults();
+  }
+}
+
+function quizBack() {
+  if (currentQ > 0) {
+    currentQ--;
+    renderQuestion();
+    window.scrollTo(0, 0);
+  }
+}
+
+// ── Scoring ────────────────────────────────────────
+function computeScores() {
+  const scores = { web: 0, ai: 0, cyber: 0, data: 0, se: 0 };
+  answers.forEach((ans, qi) => {
+    if (ans === null) return;
+    const w = QUESTIONS[qi].options[ans].w;
+    for (const key in w) scores[key] += w[key];
+  });
+  return scores;
+}
+
+function showResults() {
+  const scores = computeScores();
+  const max = Math.max(...Object.values(scores));
+  const keys = Object.keys(scores);
+
+  // Sort by score descending
+  const sorted = keys.slice().sort((a, b) => scores[b] - scores[a]);
+  const topKey = sorted[0];
+  const runnerKey = sorted[1];
+  const isClose = (scores[topKey] - scores[runnerKey]) <= 2;
+
+  // Heading
+  document.getElementById('result-heading').textContent =
+    'Your best fit: ' + SPECS[topKey].name;
+  document.getElementById('result-subheading').textContent =
+    isClose
+      ? SPECS[runnerKey].name + ' is also a strong match for you.'
+      : 'Based on your answers, this is where your interests point most clearly.';
+
+  // Primary card
+  const info = SPEC_INFO[topKey];
+  document.getElementById('primary-spec-card').innerHTML = `
+    <div class="spec-card primary">
+      <div class="spec-tag">Best match</div>
+      <div class="spec-name">${SPECS[topKey].name}</div>
+      <p>${info.summary}</p>
+      <p><strong>What a typical day looks like:</strong> ${info.day}</p>
+      <p><strong>Common roles:</strong> ${info.careers.join(', ')}.</p>
+    </div>`;
+
+  // Secondary card (only if close)
+  const secEl = document.getElementById('secondary-spec-card');
+  if (isClose) {
+    const sec = SPEC_INFO[runnerKey];
+    secEl.innerHTML = `
+      <div class="spec-card">
+        <div class="spec-tag" style="background:#e5e7eb;color:#374151;">Also a strong match</div>
+        <div class="spec-name">${SPECS[runnerKey].name}</div>
+        <p>${sec.summary}</p>
+      </div>`;
+  } else {
+    secEl.innerHTML = '';
+  }
+
+  // Next steps
+  document.getElementById('next-steps-box').innerHTML = `
+    <div class="next-steps">
+      <h3>Three things to do this week</h3>
+      <ol>${info.steps.map(s => '<li>' + s + '</li>').join('')}</ol>
+    </div>`;
+
+  // Score bars
+  const barsEl = document.getElementById('score-bars');
+  barsEl.innerHTML = sorted.map(k => {
+    const pct = max > 0 ? Math.round((scores[k] / max) * 100) : 0;
+    return `
+      <div class="score-bar-row">
+        <div class="score-bar-label">
+          <span>${SPECS[k].name}</span>
+          <span>${scores[k]} pts</span>
+        </div>
+        <div class="score-bar-bg">
+          <div class="score-bar-fill" style="width:${pct}%;background:${SPECS[k].colour}"></div>
+        </div>
+      </div>`;
+  }).join('');
+
+  showPage('results');
+}
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
